@@ -19,7 +19,8 @@ pipeline {
       steps {
         // Turn off Git's SSL cert check, uncomment if needed
         // sh 'git config --global http.sslVerify false'
-        git url: "${APPLICATION_SOURCE_REPO}"
+        //git url: "${APPLICATION_SOURCE_REPO}"
+        print "GIT URL:${APPLICATION_SOURCE_REPO}" 
       }
     }
 
