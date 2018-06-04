@@ -49,8 +49,8 @@ pipeline {
    stage('Verify Report') 
    {
       steps {
-        env.APPROVED_FLAG = input message: "Approve artifacts?"
-        print "${env.APPROVED_FLAG}"
+        def appResult = input( message: "Approve artifacts?")
+        print "RES:" + appResult
       }
    }
 
