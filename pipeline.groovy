@@ -49,7 +49,7 @@ pipeline {
    stage('Verify Report') 
    {
       steps {
-        env.APPROVED_FLAG = input id: 'APPROVAL_ID', message: 'Approve artifacts?', ok: 'Approve', submitter: 'mlacourse', submitterParameter: 'approver'
+        env.APPROVED_FLAG = input id: message: "Approve artifacts?"
         print "${env.APPROVED_FLAG}"
       }
    }
