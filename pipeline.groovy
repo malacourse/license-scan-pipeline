@@ -39,7 +39,9 @@ pipeline {
           --detect.risk.report.pdf.path="./scanreports/" \
           --blackduck.hub.trust.cert=true'
 
-        archiveArtifacts(artifacts: './scanreports/**')
+        sh 'pwd'
+        sh 'ls -lrt'
+        archiveArtifacts(artifacts: '**/scanreports/**')
      }
    }
  }
