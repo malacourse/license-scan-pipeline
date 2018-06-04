@@ -49,7 +49,8 @@ pipeline {
    stage('Verify Report') 
    {
       steps {
-        input id: 'APPROVAL_ID', message: 'Approve artifacts?', ok: 'Approve', submitter: 'true', submitterParameter: 'approver'
+        apprResult = input id: 'APPROVAL_ID', message: 'Approve artifacts?', ok: 'Approve', submitter: 'mlacourse', submitterParameter: 'approver'
+        print "Res:" + apprResults
       }
    }
 
