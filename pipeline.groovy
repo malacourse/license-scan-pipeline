@@ -35,7 +35,10 @@ pipeline {
           --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
           --detect.project.name="RedHatTest2" \
           --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
+          --detect.risk.report.pdf.path="./scanReport.pdf" \
           --blackduck.hub.trust.cert=true'
+
+        archiveArtifacts(artifacts: 'scanReport.pdf')
      }
    }
  }
