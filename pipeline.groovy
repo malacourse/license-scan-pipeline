@@ -49,8 +49,7 @@ pipeline {
    stage('Verify Report') 
    {
       steps {
-        def appResult = input( message: "Approve artifacts?")
-        print "RES:" + appResult
+        input( message: "Approve artifacts?")
       }
    }
 
