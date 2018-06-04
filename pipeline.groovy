@@ -31,14 +31,15 @@ pipeline {
         sh "mvn package"
         //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
 
+        sh "mkdir ./scanreports"
         hub_detect '--blackduck.hub.url="https://redhathub.blackducksoftware.com" \
           --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
           --detect.project.name="RedHatTest2" \
           --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
-          --detect.risk.report.pdf.path="./scanReport.pdf" \
+          --detect.risk.report.pdf.path="./scanreports/" \
           --blackduck.hub.trust.cert=true'
 
-        archiveArtifacts(artifacts: 'scanReport.pdf')
+        archiveArtifacts(artifacts: './scanreports/**')
      }
    }
  }
