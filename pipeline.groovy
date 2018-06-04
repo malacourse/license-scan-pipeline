@@ -43,6 +43,22 @@ pipeline {
         sh 'ls -lrt'
         archiveArtifacts(artifacts: '**/scanreports/**')
      }
+  
    }
+
+   stage('Verify Report') 
+   {
+      steps {
+        input id: 'APPROVAL_ID', message: 'Approve artifacts?', ok: 'Approve', submitter: 'true', submitterParameter: 'approver'
+      }
+   }
+
+   stage('Push to Nexus')
+   {
+      steps {
+        print "Pushing to Nexus"
+      }
+   }
+
  }
 }
