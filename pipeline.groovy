@@ -49,7 +49,7 @@ pipeline {
    stage('Verify Report') 
    {
       steps {
-        env.APPROVED_FLAG = input id: message: "Approve artifacts?"
+        env.APPROVED_FLAG = input message: "Approve artifacts?"
         print "${env.APPROVED_FLAG}"
       }
    }
