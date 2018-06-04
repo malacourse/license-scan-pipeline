@@ -5,7 +5,7 @@ pipeline {
   // After Pipeline completes the Pod is killed so every run will have clean
   // workspace
   agent {
-    label 'master'
+    label 'maven'
   }
 
   // Pipeline Stages start here
@@ -25,11 +25,17 @@ pipeline {
     }
 
     // Run Maven build, skipping tests
-    stage('Build'){
-      steps {
-        sh "ls -lrt"
-      }
-    }
+  stage('Build') {
 
+    sh "mvn package"
+    //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
+
+    hub_detect '--blackduck.hub.url="https://redhathub.blackducksoftware.com" \
+       --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
+       --detect.project.name="RedHatTest2" \
+       --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
+       --blackduck.hub.trust.cert=true'
   }
+  
+ }
 }
