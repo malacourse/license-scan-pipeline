@@ -49,7 +49,7 @@ pipeline {
    stage('Verify Report') 
    {
       steps {
-        input( message: "Approve artifacts?")
+        input( message: "Approve ${ARTIFACT_NAME}?")
       }
    }
 
