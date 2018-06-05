@@ -8,6 +8,8 @@ pipeline {
     label 'maven'
   }
 
+  def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
+
   // Pipeline Stages start here
   // Requeres at least one stage
   stages {
@@ -63,6 +65,7 @@ pipeline {
           print uploadPath
           reportPath = readFile('repfilepath').trim()
           print "rep:" + reportPath
+          sh "curl -k -u admin:admin123 -X PUT " + uploadPath + "/report.pdf" + " -T " + reportPath
         }
         print "Pushing to Nexus"
       }
