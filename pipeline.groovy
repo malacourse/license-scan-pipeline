@@ -57,7 +57,8 @@ pipeline {
    stage('Push to Nexus')
    {
       steps {
-        //todaysdate = new Date()
+
+        def todaysdate = new Date()
         //uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
         //print uploadPath
         //reportPath = readFile('repfilepath').trim()
