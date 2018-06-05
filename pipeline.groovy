@@ -29,7 +29,7 @@ pipeline {
   stage('Scan') {
      steps {
 
-        sh "mvn package"
+        //sh "mvn package"
         //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
 
         sh "mkdir ./scanreports"
