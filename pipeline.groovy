@@ -11,7 +11,7 @@ pipeline {
   // Pipeline Stages start here
   // Requeres at least one stage
   stages {
-    def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
+    //def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
 
     // Checkout source code
     // This is required as Pipeline code is originally checkedout to
@@ -59,6 +59,7 @@ pipeline {
    {
       steps {
         script {
+          def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
           def todaysdate = new Date()
           uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
           print uploadPath
