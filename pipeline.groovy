@@ -8,11 +8,10 @@ pipeline {
     label 'maven'
   }
 
-  def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
-
   // Pipeline Stages start here
   // Requeres at least one stage
   stages {
+    def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
 
     // Checkout source code
     // This is required as Pipeline code is originally checkedout to
