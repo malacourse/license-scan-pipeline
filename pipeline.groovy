@@ -57,12 +57,13 @@ pipeline {
    stage('Push to Nexus')
    {
       steps {
-
-        def todaysdate = new Date()
-        //uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
-        //print uploadPath
-        //reportPath = readFile('repfilepath').trim()
-        //print "rep:" + reportPath
+        script {
+          def todaysdate = new Date()
+          uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
+          print uploadPath
+          reportPath = readFile('repfilepath').trim()
+          print "rep:" + reportPath
+        }
         print "Pushing to Nexus"
       }
    }
