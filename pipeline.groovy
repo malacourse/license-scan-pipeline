@@ -41,8 +41,7 @@ pipeline {
 
         sh 'pwd'
         sh 'ls -lrt'
-        sh 'reportfile = $(find . -name "*.pdf")'
-        sh 'echo $reportfile' > repfile.txt 
+        sh 'find . -name "*.pdf" > repfilepath'
         archiveArtifacts(artifacts: '**/scanreports/**')
      }
   
@@ -59,6 +58,11 @@ pipeline {
    {
       steps {
         sh 'cat repfile.txt'
+        def date = new Date()
+        def uploadPath = date.format("YYYY/MM/dd/HH-mm-ss");
+        print uploadPath
+        def reportPath = readFile('repfilepath').trim()
+        print "rep:" + reportPath
         print "Pushing to Nexus"
       }
    }
