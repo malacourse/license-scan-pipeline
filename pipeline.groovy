@@ -67,7 +67,8 @@ pipeline {
           print "rep:" + reportPath
           sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/report.pdf" + " -T " + reportPath
         }
-        print "Pushing to Nexus"
+        sh "find . -name '*${ARTIFACT_NAME}*' > uploadfiles"
+        sh "cat uploadfiles"
       }
    }
 
