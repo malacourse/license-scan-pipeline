@@ -41,6 +41,8 @@ pipeline {
 
         sh 'pwd'
         sh 'ls -lrt'
+        sh 'reportfile = $(find . -name "*.pdf")'
+        sh 'echo $reportfile' > repfile.txt 
         archiveArtifacts(artifacts: '**/scanreports/**')
      }
   
@@ -56,6 +58,7 @@ pipeline {
    stage('Push to Nexus')
    {
       steps {
+        sh 'cat repfile.txt'
         print "Pushing to Nexus"
       }
    }
