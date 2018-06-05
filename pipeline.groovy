@@ -67,7 +67,7 @@ pipeline {
           print "rep:" + reportPath
           sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/report.pdf" + " -T " + reportPath
         
-          sh "find . -name '/home/jenkins/.m2/repository -name '*${ARTIFACT_NAME}*' > uploadfiles"
+          sh "find /home/jenkins/.m2/repository -name '*${ARTIFACT_NAME}*' > uploadfiles"
           packagePath = readFile('uploadfiles').trim()
           sh "zip ${ARTIFACT_NAME}.zip -r ${packagePath}"
           sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/${ARTIFACT_NAME}.zip" + " -T ${ARTIFACT_NAME}.zip" 
