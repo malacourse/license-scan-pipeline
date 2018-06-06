@@ -30,7 +30,7 @@ pipeline {
      steps {
 
         //sh "mvn package"
-        //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
+        //hub_detect hubParams + '--detect.project.name="RHLMDEMO-${ARTIFACT_NAME}" '
     
         print "USING DIR: ${CONTEXT_DIR}"
         sh "ls -lrt ${CONTEXT_DIR}"  
@@ -39,9 +39,9 @@ pipeline {
         {
 
           sh "mkdir ./scanreports"
-          hub_detect '--blackduck.hub.url="https://redhathub.blackducksoftware.com" \
+          hub_detect '--blackduck.hub.url="https://bizdevhub.blackducksoftware.com" \
             --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
-            --detect.project.name="RedHatTest2" \
+            --detect.project.name="RHLMDEMO-${ARTIFACT_NAME}" \
             --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
             --detect.risk.report.pdf.path="./scanreports/" \
             --blackduck.hub.trust.cert=true'
@@ -74,7 +74,7 @@ pipeline {
             print uploadPath
             reportPath = readFile('repfilepath').trim()
             print "rep:" + reportPath
-            sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/report.pdf" + " -T " + reportPath
+            sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/scan-report.pdf" + " -T " + reportPath
         
             sh "find /home/jenkins/.m2/repository -name '*${ARTIFACT_NAME}*' > uploadfiles"
             packagePath = readFile('uploadfiles').trim()

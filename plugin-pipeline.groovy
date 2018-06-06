@@ -38,8 +38,8 @@ pipeline {
         sh "mkdir ./scanreports"
         dir("${CONTEXT_DIR}")
         {
-          hub_detect '--blackduck.hub.url="https://redhathub.blackducksoftware.com" \
-            --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
+          hub_detect '--blackduck.hub.url="https://bizdevhub.blackducksoftware.com" \
+            --blackduck.hub.api.token="NjZhMmM3ODYtODQ1Ni00ZTRiLWE4ZGUtZjljOTYwMzVmZjdkOjNhNDk2ZmU1LTQyOWQtNDMxYi1hYzljLThiZWMwYzliNTc1ZA==" \
             --detect.project.name="${ARTIFACT_NAME}" \
             --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
             --detect.risk.report.pdf.path="./scanreports/" \
@@ -68,13 +68,13 @@ pipeline {
         script {
           dir ("${CONTEXT_DIR}")
           {
-            def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
+            def nexusurl = "http://nexus-cicd.apps.mikelacourse.com/repository/lm-approved/"
             def todaysdate = new Date()
             uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
             print uploadPath
             reportPath = readFile('repfilepath').trim()
             print "rep:" + reportPath
-            sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/report.pdf" + " -T " + reportPath
+            sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/scan-report.pdf" + " -T " + reportPath
         
             sh "zip ${ARTIFACT_NAME}.zip -r ."
             sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/${ARTIFACT_NAME}.zip" + " -T ${ARTIFACT_NAME}.zip" 
