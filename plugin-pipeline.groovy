@@ -48,8 +48,9 @@ pipeline {
           sh 'pwd'
           sh 'ls -lrt'
           sh 'find . -name "*.pdf" > repfilepath'
-          archiveArtifacts(artifacts: '../**/scanreports/**')
        }
+       archiveArtifacts(artifacts: '**/scanreports/**')
+
      }
   
    }
