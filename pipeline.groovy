@@ -32,7 +32,7 @@ pipeline {
         //sh "mvn package"
         //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
     
-        dir('$(CONTEXT_DIR)')
+        dir('${CONTEXT_DIR}')
         {
 
           sh "mkdir ./scanreports"
