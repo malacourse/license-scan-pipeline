@@ -31,19 +31,23 @@ pipeline {
 
         //sh "mvn package"
         //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
+    
+        dir('$(CONTEXT_DIR)')
+        {
 
-        sh "mkdir ./scanreports"
-        hub_detect '--blackduck.hub.url="https://redhathub.blackducksoftware.com" \
-          --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
-          --detect.project.name="RedHatTest2" \
-          --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
-          --detect.risk.report.pdf.path="./scanreports/" \
-          --blackduck.hub.trust.cert=true'
+          sh "mkdir ./scanreports"
+          hub_detect '--blackduck.hub.url="https://redhathub.blackducksoftware.com" \
+            --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
+            --detect.project.name="RedHatTest2" \
+            --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
+            --detect.risk.report.pdf.path="./scanreports/" \
+            --blackduck.hub.trust.cert=true'
 
-        sh 'pwd'
-        sh 'ls -lrt'
-        sh 'find . -name "*.pdf" > repfilepath'
-        archiveArtifacts(artifacts: '**/scanreports/**')
+          sh 'pwd'
+          sh 'ls -lrt'
+          sh 'find . -name "*.pdf" > repfilepath'
+          archiveArtifacts(artifacts: '**/scanreports/**')
+       }
      }
   
    }
@@ -59,18 +63,21 @@ pipeline {
    {
       steps {
         script {
-          def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
-          def todaysdate = new Date()
-          uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
-          print uploadPath
-          reportPath = readFile('repfilepath').trim()
-          print "rep:" + reportPath
-          sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/report.pdf" + " -T " + reportPath
+          dir ('${CONTEXT_DIR}')
+          {
+            def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
+            def todaysdate = new Date()
+            uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
+            print uploadPath
+            reportPath = readFile('repfilepath').trim()
+            print "rep:" + reportPath
+            sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/report.pdf" + " -T " + reportPath
         
-          sh "find /home/jenkins/.m2/repository -name '*${ARTIFACT_NAME}*' > uploadfiles"
-          packagePath = readFile('uploadfiles').trim()
-          sh "zip ${ARTIFACT_NAME}.zip -r ${packagePath}"
-          sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/${ARTIFACT_NAME}.zip" + " -T ${ARTIFACT_NAME}.zip" 
+            sh "find /home/jenkins/.m2/repository -name '*${ARTIFACT_NAME}*' > uploadfiles"
+            packagePath = readFile('uploadfiles').trim()
+            sh "zip ${ARTIFACT_NAME}.zip -r ${packagePath}"
+            sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/${ARTIFACT_NAME}.zip" + " -T ${ARTIFACT_NAME}.zip" 
+          }
         }
       }
    }
