@@ -32,7 +32,7 @@ pipeline {
         //sh "mvn package"
         //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
     
-        dir('${CONTEXT_DIR}')
+        dir("${CONTEXT_DIR}")
         {
 
           sh "mkdir ./scanreports"
@@ -63,7 +63,7 @@ pipeline {
    {
       steps {
         script {
-          dir ('${CONTEXT_DIR}')
+          dir ("${CONTEXT_DIR}")
           {
             def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
             def todaysdate = new Date()
