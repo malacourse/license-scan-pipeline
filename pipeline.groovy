@@ -32,6 +32,9 @@ pipeline {
         //sh "mvn package"
         //hub_detect hubParams + '--detect.project.name="Redhat Mike Java 1" '
     
+        print "USING DIR: ${CONTEXT_DIR}"
+        sh "ls -lrt ${CONTEXT_DIR}"  
+    
         dir("${CONTEXT_DIR}")
         {
 
