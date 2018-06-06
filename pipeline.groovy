@@ -19,7 +19,9 @@ pipeline {
           env.RC_URL = 'http://rocketchat-rocket-chat.apps.mikelacourse.com'
           env.RC_USER = 'D69DWkjdqW6QdmNmy'
           env.RC_TOKEN = 'mphgaHUUq701k8_zsZSe7vNSYa9iaUxlX3yORXJtqH6'
-          env.HUB_URL = 'https://bizdevhub.blackducksoftware.com'
+          //env.HUB_URL = 'https://bizdevhub.blackducksoftware.com'
+          //env.HUB_TOKEN = 'NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg=='
+          env.HUB_URL = 'https://redhathub.blackducksoftware.com'
           env.HUB_TOKEN = 'NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg=='
         }
       }
@@ -38,9 +40,6 @@ pipeline {
     // Run Maven build, skipping tests
   stage('Scan') {
      steps {
-
-        //sh "mvn package"
-        //hub_detect hubParams + '--detect.project.name="RHLMDEMO-${ARTIFACT_NAME}" '
     
         print "USING DIR: ${CONTEXT_DIR}"
         sh "ls -lrt ${CONTEXT_DIR}"  
@@ -84,7 +83,7 @@ pipeline {
         script {
           dir ("${CONTEXT_DIR}")
           {
-            def nexusurl = "http://nexus-cicd.apps.mikelacourse.com/repository/lm-approved/"
+            def nexusurl = "${NEXUS_URL}/repository/lm-approved/"
             def todaysdate = new Date()
             uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
             print uploadPath
