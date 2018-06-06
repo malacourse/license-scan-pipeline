@@ -35,13 +35,12 @@ pipeline {
         print "USING DIR: ${CONTEXT_DIR}"
         sh "ls -lrt ${CONTEXT_DIR}"  
     
+        sh "mkdir ./scanreports"
         dir("${CONTEXT_DIR}")
         {
-
-          sh "mkdir ./scanreports"
           hub_detect '--blackduck.hub.url="https://redhathub.blackducksoftware.com" \
             --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
-            --detect.project.name="RedHatTest2" \
+            --detect.project.name="${ARTIFACT_NAME}" \
             --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
             --detect.risk.report.pdf.path="./scanreports/" \
             --blackduck.hub.trust.cert=true'
@@ -49,7 +48,7 @@ pipeline {
           sh 'pwd'
           sh 'ls -lrt'
           sh 'find . -name "*.pdf" > repfilepath'
-          archiveArtifacts(artifacts: '**/scanreports/**')
+          archiveArtifacts(artifacts: '../**/scanreports/**')
        }
      }
   
