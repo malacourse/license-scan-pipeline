@@ -27,15 +27,7 @@ pipeline {
       }
     }
 
-
-    // Checkout source code
-    stage('Git Checkout') {
-      steps {
-        //print "GIT URL:${APPLICATION_SOURCE_REPO}" 
-      }
-    }
-
-    // Run Maven build, skipping tests
+  // Run Maven build, skipping tests
   stage('Scan') {
      steps {
     
@@ -64,9 +56,10 @@ pipeline {
       steps {
         script {
             def message = "Please review ${ARTIFACT_NAME} located at ${HUB_URL} and proceed to Openshift to approve/reject the requrest"
-           sh """
-            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#needs-approval", "text": "${message}" }'
-              """
+           sh 
+             """
+               curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#needs-approval", "text": "${message}" }'
+             """
         }
         input( message: "Approve ${ARTIFACT_NAME}?")
       }
