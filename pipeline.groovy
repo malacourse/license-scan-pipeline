@@ -11,14 +11,24 @@ pipeline {
   // Pipeline Stages start here
   // Requeres at least one stage
   stages {
-    //def nexusurl = "http://nexus-cicd.192.168.99.100.nip.io/repository/lm-approved/"
+    stage ('init')
+    {
+      steps {
+        script {
+          env.NEXUS_URL = 'http://nexus-cicd.apps.mikelacourse.com'
+          env.RC_URL = 'http://rocketchat-rocket-chat.apps.mikelacourse.com'
+          env.RC_USER = 'D69DWkjdqW6QdmNmy'
+          env.RC_TOKEN = 'mphgaHUUq701k8_zsZSe7vNSYa9iaUxlX3yORXJtqH6'
+          env.HUB_URL = 'https://bizdevhub.blackducksoftware.com'
+          env.HUB_TOKEN = 'NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg=='
+        }
+      }
+    }
+
 
     // Checkout source code
-    // This is required as Pipeline code is originally checkedout to
-    // Jenkins Master but this will also pull this same code to this slave
     stage('Git Checkout') {
       steps {
-        // Turn off Git's SSL cert check, uncomment if needed
         // sh 'git config --global http.sslVerify false'
         git url: "${APPLICATION_SOURCE_REPO}"
         //print "GIT URL:${APPLICATION_SOURCE_REPO}" 
@@ -39,8 +49,8 @@ pipeline {
         {
 
           sh "mkdir ./scanreports"
-          hub_detect '--blackduck.hub.url="https://bizdevhub.blackducksoftware.com" \
-            --blackduck.hub.api.token="NDM2ODEwN2MtMWZkMC00MTAwLTgyNDItMzViMGY1ZDQ2YzdkOjM4OTVlMTA0LTk3ZjMtNDEzYS05ZjdiLWExYjhkNjgwYWY0Mg==" \
+          hub_detect '--blackduck.hub.url="${HUB_URL}" \
+            --blackduck.hub.api.token="${HUB_TOKEN}" \
             --detect.project.name="RHLMDEMO-${ARTIFACT_NAME}" \
             --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
             --detect.risk.report.pdf.path="./scanreports/" \
@@ -58,6 +68,12 @@ pipeline {
    stage('Verify Report') 
    {
       steps {
+        script {
+            def message = "Please review ${ARTIFACT_NAME}"
+           sh """
+            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.post Message -d '{ "channel": "#rejected-artifacts", "text": "${message}" }'
+              """
+        }
         input( message: "Approve ${ARTIFACT_NAME}?")
       }
    }
