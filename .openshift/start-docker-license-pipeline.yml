@@ -2,10 +2,10 @@ apiVersion: v1
 kind: Template
 metadata:
   creationTimestamp: null
-  name: "license-maven-scan-request"
+  name: "license-docker-scan-request"
   annotations:
     description: |-
-      Start the license scan of Maven project passing in your git repo
+      Start the license scan of a openshift image
     iconClass: icon-jenkins
     tags: instant-app, jenkins
 objects:
@@ -16,18 +16,18 @@ objects:
       openshift.io/scc: restricted
     creationTimestamp: null
     labels:
-      run: maven-license-scan
-    name: maven-license-scan-${UNIQUE_VALUE}
+      run: docker-license-scan
+    name: docker-license-scan-${UNIQUE_VALUE}
   spec:
     containers:
     - command:
       - '/bin/bash'
       - '-c'
       - >
-         oc start-build license-scan-demo-pipeline -e CONTEXT_DIR=${CONTEXT_DIR} -e APPLICATION_SOURCE_REPO="${SOURCE_GIT_REPO}" -e ARTIFACT_NAME="${ARTIFACT_NAME}" -e APPROVAL_NOTES="${APPROVAL_NOTES}"
+         oc start-build docker-license-scan-demo-pipeline -e CONTEXT_DIR=${CONTEXT_DIR} -e DOCKER_IMAGE="${DOCKER_IMAGE}" -e ARTIFACT_NAME="${ARTIFACT_NAME}" -e APPROVAL_NOTES="${APPROVAL_NOTES}"
       image: docker-registry.default.svc:5000/openshift/jenkins-slave-base-rhel7
       imagePullPolicy: IfNotPresent
-      name: rhel-toolboxx
+      name: plugin-scan
       volumeMounts:
       - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
         name: jenkins-token
@@ -45,25 +45,20 @@ objects:
         defaultMode: 420
         secretName: jenkins-token-dk72n 
 parameters:
-- name: SOURCE_GIT_REPO
-  displayName: Repo containing code to scan
-  description: Name of repo to license scan
-  value: https://github.com/malacourse/scan-demo-java.git
+- name: DOCKER_IMAGE
+  displayName: Openshift Image to scan
+  description: Image to scan
+  value: docker-registry.default.svc:5000/cicd/nexus3
   required: true
 - name: ARTIFACT_NAME
   displayName: Name of package needing approval
   description: Name of package needing approval
-  value: io.prometheus
+  value: nexus3
   required: true
 - name: APPROVAL_NOTES
   displayName: Notes for approver
   description: Notes for approver
   value: Please approve
-  required: true
-- name: CONTEXT_DIR
-  displayName: Context Directory
-  description: Context Dir
-  value: "./"
   required: true
 - name: UNIQUE_VALUE
   generate: expression

@@ -33,6 +33,10 @@ objects:
       env:
         - name: "BUILD_CONTEXT_DIR"
           value: ""
+        - name: "ARTIFACT_NAME"
+          value: "test.jar"
+        - name: "APPROVER_NOTES"
+          value: "Please review"
 parameters:
 - description: The name for the application.
   name: APPLICATION_NAME
