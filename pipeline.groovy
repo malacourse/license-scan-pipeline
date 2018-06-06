@@ -71,7 +71,7 @@ pipeline {
         script {
             def message = "Please review ${ARTIFACT_NAME}"
            sh """
-            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.post Message -d '{ "channel": "#rejected-artifacts", "text": "${message}" }'
+            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#rejected-artifacts", "text": "${message}" }'
               """
         }
         input( message: "Approve ${ARTIFACT_NAME}?")
