@@ -68,7 +68,7 @@ pipeline {
         script {
           dir ("${CONTEXT_DIR}")
           {
-            def nexusurl = "http://http://nexus-cicd.apps.mikelacourse.com/repository/lm-approved/"
+            def nexusurl = "http://nexus-cicd.apps.mikelacourse.com/repository/lm-approved/"
             def todaysdate = new Date()
             uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
             print uploadPath
