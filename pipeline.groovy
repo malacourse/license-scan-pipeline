@@ -69,9 +69,9 @@ pipeline {
    {
       steps {
         script {
-            def message = "Please review ${ARTIFACT_NAME}"
+            def message = "Please review ${ARTIFACT_NAME} located at ${HUB_URL} and proceed to Openshift to approve/reject the requrest"
            sh """
-            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#rejected-artifacts", "text": "${message}" }'
+            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#needs-approval", "text": "${message}" }'
               """
         }
         input( message: "Approve ${ARTIFACT_NAME}?")
