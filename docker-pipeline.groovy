@@ -35,13 +35,14 @@ pipeline {
         //env.DOCKER_IMAGE = "docker-registry.default.svc:5000/cicd/nexus3"
 
         sh "mkdir ./scanreports"
-        //hub_detect '--blackduck.hub.url="${HUB_URL}" \
-        //    --detect.docker.image="${DOCKER_IMAGE}" \ 
-        //    --blackduck.hub.api.token="${HUB_TOKEN}" \
-        //    --detect.project.name="RHLMDEMO-${ARTIFACT_NAME}" \
-        //    --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
-        //    --detect.risk.report.pdf.path="./scanreports/" \
-        //    --blackduck.hub.trust.cert=true'
+
+        hub_detect '--blackduck.hub.url="${HUB_URL}" \
+            --detect.docker.image="${DOCKER_IMAGE}" \ 
+            --blackduck.hub.api.token="${HUB_TOKEN}" \
+            --detect.project.name="RHLMDEMO-${ARTIFACT_NAME}" \
+            --detect.policy.check.fail.on.severities=BLOCKER,CRITICAL --detect.risk.report.pdf=true \
+            --detect.risk.report.pdf.path="./scanreports/" \
+            --blackduck.hub.trust.cert=true'
 
         sh 'pwd'
         sh 'ls -lrt'
