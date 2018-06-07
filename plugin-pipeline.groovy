@@ -100,11 +100,11 @@ pipeline {
             reportPath = readFile('repfilepath').trim()
             print "rep:" + reportPath
             sh """
-              curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/scan-report.pdf" + " -T " + reportPath
+              curl -k -u admin:admin123 -X PUT  ${nexusurl}${uploadPath}/scan-report.pdf -T ${reportPath}
             """
             sh "zip  -r ${ARTIFACT_NAME}.zip -r ."
             sh """
-               curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/${ARTIFACT_NAME}.zip" + " -T ${ARTIFACT_NAME}.zip"
+               curl -k -u admin:admin123 -X PUT ${nexusurl}${uploadPath}/${ARTIFACT_NAME}.zip -T ${ARTIFACT_NAME}.zip
             """
             env.NEXUS_ARTIFACT_URL = nexusurl + uploadPath 
           }
