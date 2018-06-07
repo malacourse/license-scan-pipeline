@@ -77,6 +77,18 @@ pipeline {
       }
    }
 
+   stage('Sign Artifact')
+   {
+      steps {
+        script {
+          dir ("${CONTEXT_DIR}")
+          {
+            print "Add signature to ${ARTIFACT_NAME}.zip"
+          }
+        }
+      }
+   }
+
    stage('Push to Nexus')
    {
       steps {
@@ -99,6 +111,22 @@ pipeline {
         }
       }
    }
+
+   stage('Notify Users')
+   {
+      steps {
+        script {
+          dir ("${CONTEXT_DIR}")
+          {
+            def message = "The following artifacts have been approved: ${ARTIFACT_NAME}. They can be accessed at ${NEXUS_ARTIFACT_URL}"
+           sh """
+            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#needs-approval", "text": "${message}" }'
+              """
+          }
+        }
+      }
+   }
+
 
  }
 }
