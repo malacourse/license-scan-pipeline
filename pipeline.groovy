@@ -107,6 +107,8 @@ pipeline {
             packagePath = readFile('uploadfiles').trim()
             sh "zip ${ARTIFACT_NAME}.zip -r ${packagePath}"
             sh "curl -k -u admin:admin123 -X PUT " + nexusurl + uploadPath + "/${ARTIFACT_NAME}.zip" + " -T ${ARTIFACT_NAME}.zip" 
+
+            env.NEXUS_ARTIFACT_URL = nexusurl + uploadPath 
           }
         }
       }
