@@ -98,7 +98,7 @@ pipeline {
             def todaysdate = new Date()
             uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
             print uploadPath
-            reportPath = readFile('repfilepath').trim()
+            reportPath = readFile('../repfilepath').trim()
             print "rep:" + reportPath
             sh """
               curl -k -u admin:admin123 -X PUT  ${nexusurl}${uploadPath}/scan-report.pdf -T ${reportPath}
