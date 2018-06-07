@@ -54,7 +54,7 @@ pipeline {
         }
         sh 'pwd'
         sh 'ls -lrt'
-        sh 'find . -name "*RiskReport.pdf" > repfilepath'
+        sh 'find . -name "*RiskReport.pdf" > ./repfilepath'
         
        
        archiveArtifacts(artifacts: '**/scanreports/**')
@@ -98,7 +98,7 @@ pipeline {
             def todaysdate = new Date()
             uploadPath = todaysdate.format("YYYY/MM/dd/HH-mm-ss");
             print uploadPath
-            reportPath = readFile('../repfilepath').trim()
+            reportPath = readFile('./repfilepath').trim()
             print "rep:" + reportPath
             sh """
               curl -k -u admin:admin123 -X PUT  ${nexusurl}${uploadPath}/scan-report.pdf -T ${reportPath}
@@ -121,7 +121,7 @@ pipeline {
           {
             def message = "The following artifacts have been approved: ${ARTIFACT_NAME}. They can be accessed at ${NEXUS_ARTIFACT_URL}"
            sh """
-            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#needs-approval", "text": "${message}" }'
+            curl -H "X-Auth-Token: ${RC_TOKEN}" -H "X-User-Id: ${RC_USER}" -H "Content-type:application/json" ${RC_URL}/api/v1/chat.postMessage -d '{ "channel": "#approved-artifacts", "text": "${message}" }'
               """
           }
         }
